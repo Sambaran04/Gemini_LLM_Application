@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+
 load_dotenv()
 
 import streamlit as st
@@ -7,15 +8,16 @@ import google.generativeai as genai
 
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-## Function to load Gemini Pro Model and get response
-model=genai.GenerativeModel("gemini-pro")
+# Function to load Gemini Pro Model and get response
+model = genai.GenerativeModel("gemini-pro")
 chat = model.start_chat(history=[])
 
-def get_gemini_responses(question):
-    response=chat.send_message(question, stream=True)
-    return response
 
-## Initialize our streamlit app
+def get_gemini_responses(question):
+    return chat.send_message(question, stream=True)
+
+
+# Initialize our streamlit app
 
 st.set_page_config(page_title="Q&A Demo")
 st.header("Gemini LLM Application")
@@ -29,7 +31,7 @@ submit = st.button("Ask the question")
 
 if submit and input:
     response = get_gemini_responses(input)
-    ## Add user query and response to session chat history
+    # Add user query and response to session chat history
     st.session_state['chat_history'].append(("You", input))
     st.subheader("The response is:")
     for chunk in response:
